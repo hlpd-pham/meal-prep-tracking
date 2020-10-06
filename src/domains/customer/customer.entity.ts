@@ -15,24 +15,21 @@ export class Customer {
     name: string;
 
     @Column()
-    phone: string;
+    phone?: string;
     
     @Column({ nullable: true })
     email?: string;
     
     @Column()
-    address: string;
+    address?: string;
     
     @Column()
-    type: CustomerType;
+    type?: CustomerType = CustomerType.OneTime;
 
     @JoinTable()
     @OneToMany(
         type => Order,
         order => order.customer,
-        {
-            cascade: true
-        }
     )
     orders?: Order[]
 }

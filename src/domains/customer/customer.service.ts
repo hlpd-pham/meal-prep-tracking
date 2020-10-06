@@ -47,4 +47,11 @@ export class CustomerService {
         return this.customerRepository.remove(customer);
     }
 
+    async preloadCustomerByName(customer: Customer): Promise<Customer> {
+        const existingCustomer = await this.customerRepository.findOne({ where: { name: customer.name } });
+        if (existingCustomer) {
+            return existingCustomer;
+        }
+        return this.customerRepository.create(customer);
+    }
 }

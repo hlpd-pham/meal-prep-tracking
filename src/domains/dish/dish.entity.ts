@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from "../order/order.entity";
 
 export enum DishType {
     Breakfast = "BREAKFAST",
@@ -19,4 +20,12 @@ export class Dish {
 
     @Column()
     quantity: number = 1;
+
+    @JoinTable()
+    @ManyToMany(
+        type => Order,
+        order => order.dishes,
+    )
+    orders?: Order[]
+
 }

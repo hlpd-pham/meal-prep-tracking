@@ -10,7 +10,7 @@ export class CreateOrderDto {
     readonly customer: Customer;
     
     @IsObject({ each: true })
-    readonly dishes: Dish[];
+    readonly dishes?: Dish[];
 
     @IsDate()
     readonly orderDate: Date;

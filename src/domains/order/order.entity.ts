@@ -1,5 +1,5 @@
 
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Customer } from "../customer/customer.entity";
 import { Dish } from "../dish/dish.entity";
 
@@ -18,12 +18,22 @@ export class Order {
     @JoinTable()
     @ManyToOne(
         type => Customer,
-        customer => customer.orders
+        customer => customer.orders,
+        {
+            cascade: true
+        }
     )
     customer: Customer;
 
-    @Column('json')
-    dishes: Dish[];
+    @JoinTable()
+    @ManyToMany(
+        type => Dish,
+        dish => dish.orders,
+        {
+            cascade: true
+        }
+    )
+    dishes?: Dish[];
 
     @Column('date')
     orderDate: Date;
