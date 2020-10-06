@@ -1,9 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { OrderController } from './domains/order/order.controller';
-import { OrderService } from './domains/order/order.service';
-import { CustomerService } from './domains/customer/customer.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './domains/customer/customer.module';
 import { OrderModule } from './domains/order/order.module';
@@ -25,7 +20,7 @@ import { DishModule } from './domains/dish/dish.module';
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
