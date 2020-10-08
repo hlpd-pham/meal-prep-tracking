@@ -1,9 +1,9 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsArray, IsEnum, IsString } from "class-validator";
-import { CustomerType } from "src/domains/customer/customer.entity";
-import { Order } from "../order/order.entity";
+import { CustomerType } from "src/domains/customer/customer.model";
+import { Order } from "../order/order.model";
 
-export class CreateCustomerDto {
+export class CustomerDto {
 
     @IsString()
     readonly name: string;
@@ -24,4 +24,4 @@ export class CreateCustomerDto {
     readonly orders?: Order[];
 }
 
-export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
+export class UpdateCustomerDto extends PartialType(CustomerDto) {}

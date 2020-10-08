@@ -1,41 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundError } from 'objection';
-import { Customer } from 'src/domains/customer/customer.entity';
-import { Repository } from 'typeorm';
-import { CreateCustomerDto, UpdateCustomerDto } from './customer.dto';
+import { Customer } from 'src/domains/customer/customer.model';
+import { CustomerDto, UpdateCustomerDto } from './customer.dto';
 
 @Injectable()
 export class CustomerService {
     constructor(
-        @InjectRepository(Customer)
-        private readonly customerRepository: Repository<Customer>
+        private readonly customerModel: typeof Customer 
     ) {}
 
     findAll() {
-        return this.customerRepository.find({
-            relations: ['orders']
-        })
+        return this.customerModel.query();
     }
 
     async findOne(id: string) {
-        const customer = await this.customerRepository.findOne(id, { relations: ['orders'] })
+        const customer = await this.customerModel.query().findById(+id);
         if (!customer) {
             throw new NotFoundError(`Customer #${id} not found`)
         }
         return customer
     }
 
-    create(createCustomerDto: CreateCustomerDto) {
-        const customer = this.customerRepository.create(createCustomerDto);
-        return this.customerRepository.save(customer);
+    async create(createCustomerDto: CustomerDto) {
+        const customer = await this.customerModel.query().insert(createCustomerDto);
+        return customer
     }
 
     async update(id: string, updateCustomerDto: UpdateCustomerDto) {
-        const customer = await this.customerRepository.preload({
-            id: +id,
-            ...updateCustomerDto,
-        });
+        const customer = await this.customerModel.query().findById(+id).patch(updateCustomerDto);
         if (!customer) {
             throw new NotFoundError(`Customer #${id} not found`)
         }
@@ -43,15 +35,17 @@ export class CustomerService {
     }
 
     async remove(id: string) {
-        const customer = await this.findOne(id);
-        return this.customerRepository.remove(customer);
+        return await this.customerModel.query().deleteById(+id);
     }
 
-    async preloadCustomerByName(customer: Customer): Promise<Customer> {
-        const existingCustomer = await this.customerRepository.findOne({ where: { name: customer.name } });
-        if (existingCustomer) {
+    async preloadCustomerByName(customer: Customer): Promise<Customer> {30
+        if (customer.id) {
+            const existingCustomer = await this.customerModel.query().findById(customer.id);
+            if (!customer) {
+                throw new NotFoundError(`Customer #${customer.id} not found`)
+            }
             return existingCustomer;
         }
-        return this.customerRepository.create(customer);
+        return await this.customerModel.query().insert(customer)
     }
 }
