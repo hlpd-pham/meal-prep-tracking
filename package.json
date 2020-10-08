@@ -27,15 +27,17 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.1.4",
     "@types/dotenv": "^8.2.0",
+    "@willsoto/nestjs-objection": "^4.0.2",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
+    "glob": "^7.1.6",
     "knex": "^0.21.6",
     "objection": "^2.2.3",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4",
+    "rxjs": "^6.6.3",
     "typeorm": "^0.2.28"
   },
   "devDependencies": {
