@@ -1,43 +1,33 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { NotFoundError } from "objection";
-import { Repository } from "typeorm";
-import { UpdateCustomerDto } from "../customer/customer.dto";
 import { CreateDishDto, UpdateDishDto } from "./dish.dto";
-import { Dish } from "./dish.entity";
+import { Dish } from "./dish.model";
 
 @Injectable() 
 export class DishService {
     constructor(
-        @InjectRepository(Dish)
-        private readonly dishRepository: Repository<Dish>
+        @Inject(Dish)
+        private readonly dishModel: typeof Dish
     ) {}
 
-    findAll() {
-        return this.dishRepository.find({
-            relations: ['orders']
-        })
+    async findAll() {
+        return await this.dishModel.query();
     }
 
     async findOne(id: string) {
-        const dish = await this.dishRepository.findOne(id, { relations: ['orders'] })
+        const dish = await this.dishModel.query().findById(+id);
         if (!dish) {
-            throw new NotFoundError(`Dish #${id} not found`)
-        }
+            throw new NotFoundException(`Dish #${id} not found`);
+        } 
         return dish;
     }
 
-    create(createDishDto: CreateDishDto) {
-        const dish = this.dishRepository.create(createDishDto);
-        return this.dishRepository.save(dish);
+    async create(createDishDto: CreateDishDto) {
+        return await this.dishModel.query().insert(createDishDto);
     }
 
     async update(id: string, updateDishDto: UpdateDishDto) {
-        const dish = await this.dishRepository.preload({
-            id: +id,
-            ...updateDishDto,
-        })
-        console.log(dish)
+        const dish = this.dishModel.query().findById(+id).patch(updateDishDto); 
         if (!dish) {
             throw new NotFoundError(`Dish #${id} not found`)
         }
@@ -45,7 +35,6 @@ export class DishService {
     }
 
     async remove(id: string) {
-        const dish = await this.findOne(id)
-        return this.dishRepository.remove(dish);
+        return await this.dishModel.query().deleteById(+id);
     }
 }

@@ -1,7 +1,7 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsEnum, IsNumber, IsObject, IsString } from "class-validator";
-import { Order } from "../order/order.entity";
-import { DishType } from "./dish.entity";
+import { Order } from "../order/order.model";
+import { DishType } from "./dish.model";
 
 export class CreateDishDto {
     @IsString()
