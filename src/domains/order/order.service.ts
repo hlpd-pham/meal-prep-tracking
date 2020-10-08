@@ -1,56 +1,53 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from 'src/domains/order/order.entity';
-import { Repository } from 'typeorm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Order } from 'src/domains/order/order.model';
 import { CustomerService } from '../customer/customer.service';
-import { CreateOrderDto, UpdateOrderDto } from './order.dto';
+import { OrderDto, UpdateOrderDto } from './order.dto';
 
 @Injectable()
 export class OrderService {
     constructor(
-        @InjectRepository(Order)
-        private readonly orderRepository: Repository<Order>,
-        private readonly customerService: CustomerService
+        @Inject(Order)
+        private readonly orderModel: typeof Order,
+        private readonly customerService: CustomerService,
     ) {}
     
-    findAll() {
-        return this.orderRepository.find({
-            relations: ['customer']
-        });
+    async findAll(): Promise<Order[]> {
+        return await this.orderModel.query();
     } 
 
     async findOne(id: string) {
-        const order = await this.orderRepository.findOne(id, { relations: ['customer'] });
+        const order = await this.orderModel.query().findById(+id);
         if (!order) {
             throw new NotFoundException(`Order #${id} not found`)
         }
         return order
     }
 
-    async create(createOrderDto: CreateOrderDto) {
+    async create(createOrderDto: OrderDto) {
         const customer = await this.customerService.preloadCustomerByName(createOrderDto.customer);
-        const order = this.orderRepository.create({ ...createOrderDto, customer });
-        return this.orderRepository.save(order);
+        return await this.orderModel.query().insert({ ...createOrderDto, customer });
     }
 
     async update(id: string, updateOrderDto: UpdateOrderDto) {
+
         const customer = 
             updateOrderDto.customer && 
             await this.customerService.preloadCustomerByName(updateOrderDto.customer);
 
-        const order = await this.orderRepository.preload({
+        const order = await this.orderModel.query().findById(+id).patch({
             id: +id,
+            customer: customer,
             ...updateOrderDto,
-            customer,
+            
         });
+        
         if (!order) {
             throw new NotFoundException(`Order #${id} not found`);
         }
-        return this.orderRepository.save(order);
+        return order;
     }
 
     async remove(id: string) {
-        const order = await this.findOne(id);
-        return this.orderRepository.remove(order);
+        return await this.orderModel.query().deleteById(+id);
     }
 }

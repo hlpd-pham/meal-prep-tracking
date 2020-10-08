@@ -1,10 +1,10 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsDate, IsEnum, IsObject } from "class-validator";
-import { Customer } from "src/domains/customer/customer.entity";
-import { Dish } from "src/domains/dish/dish.entity";
-import { OrderStatus } from "src/domains/order/order.entity";
+import { Dish } from "src/domains/dish/dish.model";
+import { OrderStatus } from "src/domains/order/order.model";
+import { Customer } from "../customer/customer.model";
 
-export class CreateOrderDto {
+export class OrderDto {
 
     @IsObject()
     readonly customer: Customer;
@@ -22,5 +22,5 @@ export class CreateOrderDto {
     readonly status: OrderStatus;
 }
 
-export class UpdateOrderDto extends PartialType(CreateOrderDto) {
+export class UpdateOrderDto extends PartialType(OrderDto) {
 }
