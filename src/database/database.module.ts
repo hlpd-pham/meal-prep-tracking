@@ -5,7 +5,7 @@ import { ObjectionModule } from "@willsoto/nestjs-objection"
 @Module({
     imports: [
         ObjectionModule.register({
-            config: knexfile["development"]
+            config: knexfile[process.env.NODE_ENV || "development"]
         })
     ]
 })
