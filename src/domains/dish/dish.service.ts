@@ -10,7 +10,7 @@ export class DishService {
         private readonly dishModel: typeof Dish
     ) {}
 
-    async findAll() {
+    async findAll(): Promise<Dish[]> {
         return await this.dishModel.query();
     }
 

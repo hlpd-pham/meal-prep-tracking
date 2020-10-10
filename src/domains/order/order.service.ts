@@ -12,7 +12,9 @@ export class OrderService {
     ) {}
     
     async findAll(): Promise<Order[]> {
-        return await this.orderModel.query();
+        return await this.orderModel.query()
+            .whereExists(this.orderModel.relatedQuery('dishes'))
+            .whereExists(this.orderModel.relatedQuery('customer'));
     } 
 
     async findOne(id: string) {
