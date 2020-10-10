@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Customer } from 'src/domains/customer/customer.model';
+import { Customer } from '../customer/customer.model';
 import { CustomerDto, UpdateCustomerDto } from './customer.dto';
 
 @Injectable()
@@ -23,20 +23,23 @@ export class CustomerService {
 
     async create(createCustomerDto: CustomerDto) {
         const customer = await this.customerModel.query().insert(createCustomerDto);
-        console.log(customer);
         return customer
     }
 
     async update(id: string, updateCustomerDto: UpdateCustomerDto) {
-        const customer = await this.customerModel.query().findById(+id).patch(updateCustomerDto);
-        if (!customer) {
+        const updatingResult = await this.customerModel.query().findById(+id).patch(updateCustomerDto);
+        if (updatingResult === 0) {
             throw new NotFoundException(`Customer #${id} not found`)
         }
-        return customer;
+        return updatingResult;
     }
 
     async remove(id: string) {
-        return await this.customerModel.query().deleteById(+id);
+        const deletingResult = await this.customerModel.query().deleteById(+id);
+        if (deletingResult === 0) {
+            throw new NotFoundException(`Customer #${id} not found`)
+        }
+        return deletingResult;
     }
 
     async preloadCustomerByName(customer: Customer): Promise<Customer> {

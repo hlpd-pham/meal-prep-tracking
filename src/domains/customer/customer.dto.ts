@@ -1,6 +1,6 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsArray, IsEnum, IsString } from "class-validator";
-import { CustomerType } from "src/domains/customer/customer.model";
+import { CustomerType } from "../customer/customer.model";
 import { Order } from "../order/order.model";
 
 export class CustomerDto {

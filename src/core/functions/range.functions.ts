@@ -1,0 +1,1 @@
+export let generateRange = n => [...Array(n).keys()];

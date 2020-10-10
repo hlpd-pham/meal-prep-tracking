@@ -1,7 +1,7 @@
 import { PartialType } from "@nestjs/mapped-types";
 import { IsDate, IsEnum, IsObject } from "class-validator";
 import { Dish } from "src/domains/dish/dish.model";
-import { OrderStatus } from "src/domains/order/order.model";
+import { OrderStatus } from "../order/order.model";
 import { Customer } from "../customer/customer.model";
 
 export class OrderDto {
