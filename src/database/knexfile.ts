@@ -17,6 +17,10 @@ module.exports = {
         host: "localhost",
       }
     },
+    seeds: {
+      directory: './seeds'
+    }
+    ,
     migrations: {
         extension: "ts",
         directory: "migrations",
