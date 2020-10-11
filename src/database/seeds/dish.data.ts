@@ -1,6 +1,7 @@
 import * as Knex from "knex";
 import * as faker from "faker";
 import { generateRange } from "../../core/functions/range.functions";
+import { titleCase } from "../../core/functions/string.functions";
 import { DishType } from "../../domains/dish/dish.model";
 
 export async function seed(knex: Knex): Promise<void> {
@@ -12,9 +13,9 @@ export async function seed(knex: Knex): Promise<void> {
     generateRange(7).forEach(num => {
         let dish = {
             id: num,
-            name: faker.image.food(),
+            name: titleCase(faker.lorem.words(2)),
             type: dishTypes[Math.floor(Math.random() * dishTypes.length)],
-            quantity: faker.random.number(20),
+            quantity: faker.random.number(20) + 1,
         }
         dishes.push(dish)
     })
