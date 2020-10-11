@@ -12,7 +12,6 @@ export async function seed(knex: Knex): Promise<void> {
     let customerTypes = Object.values(CustomerType);
     generateRange(7).forEach(number => {
         let c = {
-            id: number,
             name: faker.name.findName(),
             phone: faker.phone.phoneNumberFormat(),
             email: faker.internet.email(),

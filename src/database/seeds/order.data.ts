@@ -14,7 +14,6 @@ export async function seed(knex: Knex): Promise<void> {
         let orderDate = faker.date.between("2020-10-10","2020-10-30");
         let deliveryDate = addDays(orderDate, 5);
         let order = {
-            id: num,
             orderDate: orderDate,
             deliveryDate: deliveryDate,
             status: OrderStatus.Received,

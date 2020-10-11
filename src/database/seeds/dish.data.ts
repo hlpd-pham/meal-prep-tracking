@@ -12,7 +12,6 @@ export async function seed(knex: Knex): Promise<void> {
     let dishTypes = Object.values(DishType);
     generateRange(7).forEach(num => {
         let dish = {
-            id: num,
             name: titleCase(faker.lorem.words(2)),
             type: dishTypes[Math.floor(Math.random() * dishTypes.length)],
             quantity: faker.random.number(20) + 1,
