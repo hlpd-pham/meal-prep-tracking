@@ -1,6 +1,6 @@
 import * as Knex from "knex";
 import * as faker from "faker";
-import { Customer, CustomerType } from "../../domains/customer/customer.model";
+import { CustomerType } from "../../domains/customer/customer.model";
 import { generateRange } from "../../core/functions/range.functions";
 
 export async function seed(knex: Knex): Promise<void> {
