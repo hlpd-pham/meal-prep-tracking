@@ -42,7 +42,7 @@ export class CustomerService {
         return deletingResult;
     }
 
-    async preloadCustomerByName(customer: Customer): Promise<Customer> {
+    async preloadCustomer(customer: Customer): Promise<Customer> {
         if (customer.id) {
             const existingCustomer = await this.customerModel.query().findById(customer.id);
             if (!customer) {
