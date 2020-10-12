@@ -8,6 +8,7 @@ import { DishService } from "./dish.service";
     imports: [
         ObjectionModule.forFeature([Dish]),
     ],
+    exports: [DishService],
     controllers: [DishController],
     providers: [DishService]
 })
