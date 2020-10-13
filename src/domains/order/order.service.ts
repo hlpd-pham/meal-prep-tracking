@@ -34,7 +34,8 @@ export class OrderService {
 
         // associate customer with order
         const preloadedCustomer = await this.customerService.preloadCustomer(customer);
-        const order = await preloadedCustomer.$relatedQuery('orders').insert(orderInfo);
+        const order = await this.orderModel.query().insert(orderInfo);
+        await preloadedCustomer.$relatedQuery('orders').relate(order);
 
         // associate dishes with order
         if (dishes) {
@@ -62,7 +63,6 @@ export class OrderService {
                 await this.customerService.preloadCustomer(customer);
 
             await this.orderModel.query().findById(+orderId).patch(orderInfo);
-            await this.customerModel.relatedQuery('orders').unrelate().where('id', +orderId);
             await preloadedCustomer.$relatedQuery('orders').relate(order)
         }
 
