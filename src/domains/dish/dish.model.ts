@@ -25,7 +25,7 @@ export class Dish extends Model {
     quantity: number = 1;
 
     static relationMappings = {
-        orders: {
+        order: {
             relation: Model.BelongsToOneRelation,
             modelClass: Order,
             join: {
