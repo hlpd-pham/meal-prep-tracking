@@ -14,6 +14,7 @@ import { OrderService } from './order.service'
         DishModule,
         ObjectionModule.forFeature([Order, Customer, Dish]),
     ],
+    exports: [OrderService],
     controllers: [OrderController],
     providers: [OrderService]
 })

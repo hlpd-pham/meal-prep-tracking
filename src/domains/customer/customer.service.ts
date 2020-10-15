@@ -10,11 +10,12 @@ export class CustomerService {
     ) {}
 
     findAll() {
-        return this.customerModel.query();
+        return this.customerModel.query().withGraphFetched('orders')
     }
 
     async findOne(id: string) {
-        const customer = await this.customerModel.query().findById(+id);
+        const customer = await this.customerModel.query().findById(+id)
+                                .withGraphFetched('orders')
         if (!customer) {
             throw new NotFoundException(`Customer #${id} not found`)
         }
@@ -44,8 +45,8 @@ export class CustomerService {
 
     async preloadCustomer(customer: Customer): Promise<Customer> {
         if (customer.id) {
-            const existingCustomer = await this.customerModel.query().findById(customer.id);
-            if (!customer) {
+            const existingCustomer = await this.customerModel.query().findById(+customer.id);
+            if (!existingCustomer) {
                 throw new NotFoundException(`Customer #${customer.id} not found`)
             }
             return existingCustomer;

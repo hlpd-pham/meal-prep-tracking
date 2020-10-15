@@ -24,9 +24,6 @@ export class Dish extends Model {
     @IsNumber()
     quantity: number = 1;
 
-    @IsObject({ each: true })
-    orders?: Order[]
-
     static relationMappings = {
         orders: {
             relation: Model.BelongsToOneRelation,

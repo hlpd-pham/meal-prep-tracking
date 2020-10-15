@@ -1,13 +1,15 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { NotFoundError } from "objection";
-import { CreateDishDto, UpdateDishDto } from "./dish.dto";
+import { Order } from "../order/order.model";
+import { DishDto, UpdateDishDto } from "./dish.dto";
 import { Dish } from "./dish.model";
 
 @Injectable() 
 export class DishService {
     constructor(
         @Inject(Dish)
-        private readonly dishModel: typeof Dish
+        private readonly dishModel: typeof Dish,
+        @Inject(Order)
+        private readonly orderModel: typeof Order
     ) {}
 
     async findAll(): Promise<Dish[]> {
@@ -22,15 +24,38 @@ export class DishService {
         return dish;
     }
 
-    async create(createDishDto: CreateDishDto) {
-        return await this.dishModel.query().insert(createDishDto);
+    async create(dishDto: DishDto) {
+        // An order in dishDto has to be an existing order
+        const { orderId, ...dishInfo } = dishDto;
+
+        const dish = await this.dishModel.query().insert(dishInfo);
+        if (orderId) {
+            const orderModelItem = await this.orderModel.query().findById(orderId)
+            if (!orderModelItem) {
+                throw new NotFoundException(`Order #${orderId} not found`);
+            }
+            orderModelItem.$relatedQuery('dishes').relate(dish);
+        }
+
+        return dish;
     }
 
     async update(id: string, updateDishDto: UpdateDishDto) {
-        const dish = this.dishModel.query().findById(+id).patch(updateDishDto); 
+        // An order in dishDto has to be an existing order
+        const { orderId, ...dishInfo } = updateDishDto;
+        const dish = await this.dishModel.query().findById(+id).patch(updateDishDto); 
         if (!dish) {
-            throw new NotFoundError(`Dish #${id} not found`);
+            throw new NotFoundException(`Dish #${id} not found`);
         }
+
+        if (orderId) {
+            const orderModelItem = await this.orderModel.query().findById(orderId)
+            if (!orderModelItem) {
+                throw new NotFoundException(`Order #${orderId} not found`);
+            }
+            orderModelItem.$relatedQuery('dishes').relate(dish);
+        }
+
         return dish;
     }
 

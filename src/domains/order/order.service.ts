@@ -17,15 +17,16 @@ export class OrderService {
     ) {}
     
     async findAll(): Promise<Order[]> {
-        const orders =  await this.orderModel.query();
-        return orders;
+        return await this.orderModel
+                            .query()
+                            .withGraphFetched('dishes');
     } 
 
     async findOne(orderId: string) {
-        const order = await this.orderModel.query().findById(+orderId);
-        if (!order) {
-            throw new NotFoundException(`Order #${orderId} not found`)
-        }
+        const order = await this.orderModel
+                                .query()
+                                .findById(+orderId)
+                                .withGraphFetched('dishes');
         return order
     }
 
@@ -58,12 +59,10 @@ export class OrderService {
 
         // associate customer with order
         if (customer) {            
-            const preloadedCustomer = 
-                customer && 
-                await this.customerService.preloadCustomer(customer);
+            const preloadedCustomer = await this.customerService.preloadCustomer(customer);
 
             await this.orderModel.query().findById(+orderId).patch(orderInfo);
-            await preloadedCustomer.$relatedQuery('orders').relate(order)
+            await preloadedCustomer.$relatedQuery('orders').relate(order);
         }
 
         // associate order with dishes

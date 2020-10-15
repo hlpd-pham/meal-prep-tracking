@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
-import { CreateDishDto, UpdateDishDto } from "./../dish/dish.dto";
+import { DishDto, UpdateDishDto } from "./../dish/dish.dto";
 import { DishService } from "./../dish/dish.service";
 
 @Controller('dishes')
@@ -17,17 +17,17 @@ export class DishController {
     }
 
     @Post()
-    create(@Body() createDishDto: CreateDishDto) {
-        return this.dishService.create(createDishDto);
+    create(@Body() dishDto: DishDto) {
+        return this.dishService.create(dishDto);
     }
 
     @Patch(':id')
-    update(@Param(':id') id: string, @Body() updateDishDto: UpdateDishDto) {
+    update(@Param('id') id: string, @Body() updateDishDto: UpdateDishDto) {
         return this.dishService.update(id, updateDishDto);
     }
 
     @Delete(':id')
-    remove(@Param(':id') id: string) {
+    remove(@Param('id') id: string) {
         return this.dishService.remove(id)
     }
 }

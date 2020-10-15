@@ -1,9 +1,8 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsEnum, IsNumber, IsObject, IsString } from "class-validator";
-import { Order } from "../order/order.model";
+import { IsEnum, IsNumber, IsString } from "class-validator";
 import { DishType } from "./dish.model";
 
-export class CreateDishDto {
+export class DishDto {
     @IsString()
     readonly name: string;
 
@@ -13,8 +12,8 @@ export class CreateDishDto {
     @IsNumber()
     readonly quantity: number;
 
-    @IsObject({ each: true })
-    readonly orders?: Order[];
+    @IsNumber()
+    readonly orderId: number;
 }
 
-export class UpdateDishDto extends PartialType(CreateDishDto) {}
+export class UpdateDishDto extends PartialType(DishDto) {}

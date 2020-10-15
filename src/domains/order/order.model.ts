@@ -17,12 +17,6 @@ export class Order extends Model {
     @IsNumber()
     id: number;
 
-    @IsObject()
-    customer: Customer;
-
-    @IsObject({ each: true})
-    dishes?: Dish[];
-    
     @IsDate()
     orderDate: Date;
     

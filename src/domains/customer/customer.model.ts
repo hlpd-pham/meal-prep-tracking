@@ -29,9 +29,6 @@ export class Customer extends Model {
     @IsEnum(CustomerType)
     type?: CustomerType = CustomerType.OneTime;
 
-    @IsObject({ each: true })
-    orders?: Order[]
-
     static relationMappings = {
         orders: {
             relation: Model.HasManyRelation,
