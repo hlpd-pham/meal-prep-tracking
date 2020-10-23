@@ -1,7 +1,7 @@
 import * as Knex from "knex";
 import * as faker from "faker";
-import { CustomerType } from "../../domains/customer/customer.model";
-import { generateRange } from "../../core/functions/range.functions";
+import { CustomerType } from "../../../domains/customer/customer.model";
+import { generateRange } from "../../../core/functions/range.functions";
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries

@@ -6,16 +6,16 @@ import { Dish } from '../dish/dish.model';
 import { DishModule } from '../dish/dish.module';
 import { OrderController } from './order.controller';
 import { Order } from './order.model';
-import { OrderService } from './order.service'
+import { OrderService } from './order.service';
 
 @Module({
-    imports: [
-        CustomerModule,
-        DishModule,
-        ObjectionModule.forFeature([Order, Customer, Dish]),
-    ],
-    exports: [OrderService],
-    controllers: [OrderController],
-    providers: [OrderService]
+  imports: [
+    CustomerModule,
+    DishModule,
+    ObjectionModule.forFeature([Order, Customer, Dish]),
+  ],
+  exports: [OrderService],
+  controllers: [OrderController],
+  providers: [OrderService],
 })
 export class OrderModule {}

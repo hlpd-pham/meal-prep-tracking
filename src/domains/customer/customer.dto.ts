@@ -1,27 +1,22 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { IsArray, IsEnum, IsString } from "class-validator";
-import { CustomerType } from "../customer/customer.model";
-import { Order } from "../order/order.model";
+import { PartialType } from '@nestjs/mapped-types';
+import { IsEnum, IsString } from 'class-validator';
+import { CustomerType } from '../customer/customer.model';
 
 export class CustomerDto {
+  @IsString()
+  readonly name: string;
 
-    @IsString()
-    readonly name: string;
+  @IsString()
+  readonly phone: string;
 
-    @IsString()
-    readonly phone: string;
+  @IsString()
+  readonly email?: string;
 
-    @IsString()
-    readonly email?: string;
-    
-    @IsString()
-    readonly address: string;
+  @IsString()
+  readonly address: string;
 
-    @IsEnum(CustomerType)
-    readonly type: CustomerType;
-
-    @IsArray()
-    readonly orders?: Order[];
+  @IsEnum(CustomerType)
+  readonly type: CustomerType;
 }
 
 export class UpdateCustomerDto extends PartialType(CustomerDto) {}

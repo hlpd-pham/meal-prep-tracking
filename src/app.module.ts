@@ -8,8 +8,8 @@ import { OrderModule } from './domains/order/order.module';
 import { CoreModule } from './core/core.module';
 @Module({
   imports: [
-    DatabaseModule, 
-    DishModule, 
+    DatabaseModule,
+    DishModule,
     CustomerModule,
     OrderModule,
     CoreModule,

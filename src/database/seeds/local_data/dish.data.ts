@@ -1,8 +1,8 @@
 import * as Knex from "knex";
 import * as faker from "faker";
-import { generateRange } from "../../core/functions/range.functions";
-import { titleCase } from "../../core/functions/string.functions";
-import { DishType } from "../../domains/dish/dish.model";
+import { generateRange } from "../../../core/functions/range.functions";
+import { titleCase } from "../../../core/functions/string.functions";
+import { DishType } from "../../../domains/dish/dish.model";
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries

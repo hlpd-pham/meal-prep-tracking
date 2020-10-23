@@ -1,76 +1,79 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { Order } from "../order/order.model";
-import { DishDto, UpdateDishDto } from "./dish.dto";
-import { Dish } from "./dish.model";
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Order } from '../order/order.model';
+import { DishDto, UpdateDishDto } from './dish.dto';
+import { Dish } from './dish.model';
 
-@Injectable() 
+@Injectable()
 export class DishService {
-    constructor(
-        @Inject(Dish)
-        private readonly dishModel: typeof Dish,
-        @Inject(Order)
-        private readonly orderModel: typeof Order
-    ) {}
+  constructor(
+    @Inject(Dish)
+    private readonly dishModel: typeof Dish,
+    @Inject(Order)
+    private readonly orderModel: typeof Order,
+  ) {}
 
-    async findAll(): Promise<Dish[]> {
-        return await this.dishModel.query();
+  async findAll(): Promise<Dish[]> {
+    return await this.dishModel.query();
+  }
+
+  async findOne(id: string) {
+    const dish = await this.dishModel.query().findById(+id);
+    if (!dish) {
+      throw new NotFoundException(`Dish #${id} not found`);
+    }
+    return dish;
+  }
+
+  async create(dishDto: DishDto) {
+    // An order in dishDto has to be an existing order
+    const { orderId, ...dishInfo } = dishDto;
+
+    const dish = await this.dishModel.query().insert(dishInfo);
+    if (orderId) {
+      const orderModelItem = await this.orderModel.query().findById(orderId);
+      if (!orderModelItem) {
+        throw new NotFoundException(`Order #${orderId} not found`);
+      }
+      orderModelItem.$relatedQuery('dishes').relate(dish);
     }
 
-    async findOne(id: string) {
-        const dish = await this.dishModel.query().findById(+id);
-        if (!dish) {
-            throw new NotFoundException(`Dish #${id} not found`);
-        } 
-        return dish;
+    return dish;
+  }
+
+  async update(id: string, updateDishDto: UpdateDishDto) {
+    // An order in dishDto has to be an existing order
+    const { orderId, ...dishInfo } = updateDishDto;
+    const dish = await this.dishModel
+      .query()
+      .findById(+id)
+      .patch(dishInfo);
+    if (!dish) {
+      throw new NotFoundException(`Dish #${id} not found`);
     }
 
-    async create(dishDto: DishDto) {
-        // An order in dishDto has to be an existing order
-        const { orderId, ...dishInfo } = dishDto;
-
-        const dish = await this.dishModel.query().insert(dishInfo);
-        if (orderId) {
-            const orderModelItem = await this.orderModel.query().findById(orderId)
-            if (!orderModelItem) {
-                throw new NotFoundException(`Order #${orderId} not found`);
-            }
-            orderModelItem.$relatedQuery('dishes').relate(dish);
-        }
-
-        return dish;
+    if (orderId) {
+      const orderModelItem = await this.orderModel.query().findById(orderId);
+      if (!orderModelItem) {
+        throw new NotFoundException(`Order #${orderId} not found`);
+      }
+      orderModelItem.$relatedQuery('dishes').relate(dish);
     }
 
-    async update(id: string, updateDishDto: UpdateDishDto) {
-        // An order in dishDto has to be an existing order
-        const { orderId, ...dishInfo } = updateDishDto;
-        const dish = await this.dishModel.query().findById(+id).patch(updateDishDto); 
-        if (!dish) {
-            throw new NotFoundException(`Dish #${id} not found`);
-        }
+    return dish;
+  }
 
-        if (orderId) {
-            const orderModelItem = await this.orderModel.query().findById(orderId)
-            if (!orderModelItem) {
-                throw new NotFoundException(`Order #${orderId} not found`);
-            }
-            orderModelItem.$relatedQuery('dishes').relate(dish);
-        }
+  async remove(id: string) {
+    return await this.dishModel.query().deleteById(+id);
+  }
 
-        return dish;
+  async preloadDish(dish: Dish): Promise<Dish> {
+    if (dish.id) {
+      const existingDish = await this.dishModel.query().findById(dish.id);
+      if (!existingDish) {
+        throw new NotFoundException(`Dish #${dish.id} not found`);
+      }
+      return existingDish;
     }
-
-    async remove(id: string) {
-        return await this.dishModel.query().deleteById(+id);
-    }
-
-    async preloadDish(dish: Dish): Promise<Dish> {
-        if (dish.id) {
-            const existingDish = await this.dishModel.query().findById(dish.id);
-            if (!dish) {
-                throw new NotFoundException(`Dish #${dish.id} not found`);
-            }
-            return existingDish;
-        }
-        return await this.dishModel.query().insert(dish);
-    }
+    return await this.dishModel.query().insert(dish);
+  }
 }

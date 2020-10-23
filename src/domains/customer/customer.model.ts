@@ -3,40 +3,39 @@ import { Model } from 'objection';
 import { Order } from '../order/order.model';
 
 export enum CustomerType {
-    OneTime = "ONE_TIME",
-    Recurring = "RECURRING",
+  OneTime = 'ONE_TIME',
+  Recurring = 'RECURRING',
 }
 
 export class Customer extends Model {
+  static tableName = 'customers';
 
-    static tableName = "customers";
+  @IsNumber()
+  id: number;
 
-    @IsNumber()
-    id: number;
+  @IsString()
+  name: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  phone?: string;
 
-    @IsString()
-    phone?: string;
-    
-    @IsString()
-    email?: string;
-    
-    @IsString()
-    address?: string;
-    
-    @IsEnum(CustomerType)
-    type?: CustomerType = CustomerType.OneTime;
+  @IsString()
+  email?: string;
 
-    static relationMappings = {
-        orders: {
-            relation: Model.HasManyRelation,
-            modelClass: Order,
-            join: {
-                from: "customers.id",
-                to: "orders.customerId",
-            }
-        }
-    }
+  @IsString()
+  address?: string;
+
+  @IsEnum(CustomerType)
+  type?: CustomerType = CustomerType.OneTime;
+
+  static relationMappings = {
+    orders: {
+      relation: Model.HasManyRelation,
+      modelClass: Order,
+      join: {
+        from: 'customers.id',
+        to: 'orders.customerId',
+      },
+    },
+  };
 }
