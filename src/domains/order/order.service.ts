@@ -35,7 +35,10 @@ export class OrderService {
     const preloadedCustomer = await this.customerService.preloadCustomer(
       customer,
     );
-    const order = await this.orderModel.query().insert(orderInfo);
+    const order = await this.orderModel
+      .query()
+      .insert(orderInfo)
+      .withGraphFetched('dishes');
     await preloadedCustomer.$relatedQuery('orders').relate(order);
 
     // associate dishes with order
@@ -52,7 +55,10 @@ export class OrderService {
   async update(orderId: string, updateOrderDto: UpdateOrderDto) {
     const { customer, dishes, ...orderInfo } = updateOrderDto;
 
-    const order = await this.orderModel.query().findById(+orderId);
+    const order = await this.orderModel
+      .query()
+      .findById(+orderId)
+      .withGraphFetched('dishes');
     if (!order) {
       throw new NotFoundException(`Order #${orderId} not found`);
     }

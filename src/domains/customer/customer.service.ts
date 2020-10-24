@@ -32,9 +32,10 @@ export class CustomerService {
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     const updatingResult = await this.customerModel
       .query()
+      .patch(updateCustomerDto)
       .findById(+id)
-      .patch(updateCustomerDto);
-    if (updatingResult === 0) {
+      .withGraphFetched('orders');
+    if (!updatingResult) {
       throw new NotFoundException(`Customer #${id} not found`);
     }
     return updatingResult;
@@ -52,7 +53,8 @@ export class CustomerService {
     if (customer.id) {
       const existingCustomer = await this.customerModel
         .query()
-        .findById(+customer.id);
+        .findById(+customer.id)
+        .withGraphFetched('orders');
       if (!existingCustomer) {
         throw new NotFoundException(`Customer #${customer.id} not found`);
       }
