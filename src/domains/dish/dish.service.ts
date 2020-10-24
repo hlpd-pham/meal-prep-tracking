@@ -43,11 +43,14 @@ export class DishService {
   async update(id: string, updateDishDto: UpdateDishDto) {
     // An order in dishDto has to be an existing order
     const { orderId, ...dishInfo } = updateDishDto;
-    const dish = await this.dishModel
+    await this.dishModel
       .query()
-      .findById(+id)
-      .patch(dishInfo);
-    if (!dish) {
+      .patch(dishInfo)
+      .findById(+id);
+
+    const updatedDish = await this.dishModel.query().findById(+id);
+
+    if (!updatedDish) {
       throw new NotFoundException(`Dish #${id} not found`);
     }
 
@@ -56,14 +59,18 @@ export class DishService {
       if (!orderModelItem) {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
-      orderModelItem.$relatedQuery('dishes').relate(dish);
+      orderModelItem.$relatedQuery('dishes').relate(updatedDish);
     }
 
-    return dish;
+    return updatedDish;
   }
 
   async remove(id: string) {
-    return await this.dishModel.query().deleteById(+id);
+    const numberOfAffectedRows = await this.dishModel.query().deleteById(+id);
+    if (numberOfAffectedRows === 0) {
+      throw new NotFoundException(`Order #${id} not found`);
+    }
+    return numberOfAffectedRows;
   }
 
   async preloadDish(dish: Dish): Promise<Dish> {
