@@ -16,7 +16,7 @@ export class OrderService {
     private readonly dishService: DishService,
   ) {}
 
-  async findAll(): Promise<Order[]> {
+  async findAll() {
     return await this.orderModel.query().withGraphFetched('dishes');
   }
 

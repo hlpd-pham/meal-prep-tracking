@@ -2,11 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { Dish, DishType } from './dish.model';
 import { DishService } from './dish.service';
-import * as faker from 'faker';
-import { Order, OrderStatus } from '../order/order.model';
+import { Order } from '../order/order.model';
 import { QueryBuilder } from 'objection';
 import { NotFoundException } from '@nestjs/common';
 import { DishDto, UpdateDishDto } from './dish.dto';
+import { dishFactory, orderFactory } from './../../test/factories';
+import * as faker from 'faker';
 
 describe('CustomerService', () => {
   let dishService: DishService;
@@ -181,33 +182,3 @@ describe('CustomerService', () => {
     });
   });
 });
-
-function dishFactory({ id, name, type, quantity }: Partial<Dish> = {}): Dish {
-  const dishItem = new Dish();
-  const dishTypes = Object.values(DishType);
-  dishItem.id = id ?? faker.random.number();
-  dishItem.name = name ?? faker.random.word();
-  dishItem.type =
-    type ?? dishTypes[Math.floor(Math.random() * dishTypes.length)];
-  dishItem.quantity = quantity ?? faker.random.number();
-  return dishItem;
-}
-
-function orderFactory({
-  id,
-  orderDate,
-  deliveryDate,
-  status,
-}: Partial<Order> = {}) {
-  const order = new Order();
-  const orderStatusValues = Object.values(OrderStatus);
-  order.id = id ?? faker.random.number();
-  order.orderDate = orderDate ?? new Date();
-  order.deliveryDate = deliveryDate ?? faker.date.future();
-  order.status =
-    status ??
-    orderStatusValues[Math.floor(Math.random() * orderStatusValues.length)];
-  order.$relatedQuery = () =>
-    QueryBuilder.forClass(Order).resolve('mockRelatedQuery');
-  return order;
-}
