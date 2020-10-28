@@ -1,12 +1,15 @@
-version: "3"
+version: '3'
 
 services:
-  db:
+  meal-prep-db:
     image: postgres
     restart: always
     ports:
-      - "5432:5432"
-    environment: 
-      POSTGRES_PASSWORD: pass123
+      - '5432:5432'
+    env_file:
+      - .env
+    volumes:
+      - meal_prep_data:/var/lib/postgresql/data/
 
-  
+volumes:
+  meal_prep_data:
