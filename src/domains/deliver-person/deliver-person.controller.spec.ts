@@ -12,7 +12,5 @@ describe('DeliverPersonController', () => {
     controller = module.get<DeliverPersonController>(DeliverPersonController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+  it.todo('should be defined');
 });

@@ -1,18 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Customer } from './customer.model';
 import { CustomerService } from './customer.service';
 
 describe('CustomerService', () => {
   let service: CustomerService;
+  let mockCustomerModel: typeof Customer;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CustomerService],
-    }).compile();
+    })
+      .overrideProvider(Customer)
+      .useValue(mockCustomerModel)
+      .compile();
 
     service = module.get<CustomerService>(CustomerService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  it.todo('test findAll, findOne, create, update, remove');
 });
