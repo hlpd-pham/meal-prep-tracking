@@ -41,7 +41,10 @@ describe('CustomerService', () => {
       dishQuerySpy.mockReturnValue(
         QueryBuilder.forClass(Dish).resolve(dishItem),
       );
-      expect(await dishService.findOne('1')).toBe(dishItem);
+
+      const queryResult = await dishService.findOne('1');
+
+      expect(queryResult).toBe(dishItem);
     });
 
     it('should return an error when item not found', async () => {

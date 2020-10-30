@@ -1,6 +1,7 @@
-import { IsDate, IsEnum, IsNumber, IsObject } from 'class-validator';
+import { IsDate, IsEnum, IsNumber } from 'class-validator';
 import { Model } from 'objection';
 import { Customer } from '../customer/customer.model';
+import { DeliverPerson } from '../deliver-person/deliver-person.model';
 import { Dish } from '../dish/dish.model';
 
 export enum OrderStatus {
@@ -40,6 +41,14 @@ export class Order extends Model {
       join: {
         from: 'orders.customerId',
         to: 'customers.id',
+      },
+    },
+    deliverPerson: {
+      relation: Model.BelongsToOneRelation,
+      modelClass: DeliverPerson,
+      join: {
+        from: 'orders.deliverPersonId',
+        to: 'deliver_persons.id',
       },
     },
   };

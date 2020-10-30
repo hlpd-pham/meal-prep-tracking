@@ -31,15 +31,18 @@ export class OrderService {
   async create(orderDto: OrderDto) {
     const { customer, dishes, ...orderInfo } = orderDto;
 
-    // associate customer with order
-    const preloadedCustomer = await this.customerService.preloadCustomer(
-      customer,
-    );
     const order = await this.orderModel
       .query()
       .insert(orderInfo)
       .withGraphFetched('dishes');
-    await preloadedCustomer.$relatedQuery('orders').relate(order);
+
+    // associate customer with order
+    if (customer) {
+      const preloadedCustomer = await this.customerService.preloadCustomer(
+        customer,
+      );
+      await preloadedCustomer.$relatedQuery('orders').relate(order);
+    }
 
     // associate dishes with order
     if (dishes) {
@@ -63,16 +66,17 @@ export class OrderService {
       throw new NotFoundException(`Order #${orderId} not found`);
     }
 
+    await this.orderModel
+      .query()
+      .findById(+orderId)
+      .patch(orderInfo);
+
     // associate customer with order
     if (customer) {
       const preloadedCustomer = await this.customerService.preloadCustomer(
         customer,
       );
 
-      await this.orderModel
-        .query()
-        .findById(+orderId)
-        .patch(orderInfo);
       await preloadedCustomer.$relatedQuery('orders').relate(order);
     }
 

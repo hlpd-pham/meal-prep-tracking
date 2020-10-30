@@ -6,6 +6,7 @@ import { CustomerModule } from './domains/customer/customer.module';
 import { DishModule } from './domains/dish/dish.module';
 import { OrderModule } from './domains/order/order.module';
 import { CoreModule } from './core/core.module';
+import { DeliverPersonModule } from './domains/deliver-person/deliver-person.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -13,6 +14,7 @@ import { CoreModule } from './core/core.module';
     CustomerModule,
     OrderModule,
     CoreModule,
+    DeliverPersonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

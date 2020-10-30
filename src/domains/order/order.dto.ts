@@ -6,7 +6,7 @@ import { Customer } from '../customer/customer.model';
 
 export class OrderDto {
   @IsObject()
-  readonly customer: Customer;
+  readonly customer?: Customer;
 
   @IsObject({ each: true })
   readonly dishes?: Dish[];
