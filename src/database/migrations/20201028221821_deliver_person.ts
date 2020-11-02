@@ -7,12 +7,12 @@ export async function up(knex: Knex): Promise<void> {
       table.string('name').notNullable();
       table.string('phone').notNullable();
       table.string('email').nullable();
-      table.timestamp('created_at').defaultTo(knex.fn.now());
-      table.timestamp('updated_at').defaultTo(knex.fn.now());
+      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('updatedAt').defaultTo(knex.fn.now());
     })
-    .alterTable('orders', table => {
-      table
-        .bigInteger('deliverPersonId')
+    .table('orders', function(ordersTable) {
+      ordersTable
+        .integer('deliverPersonId')
         .unsigned()
         .index()
         .references('id')

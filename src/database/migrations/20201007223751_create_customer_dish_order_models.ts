@@ -7,13 +7,13 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema
     .createTable('customers', function(table) {
       table.increments();
-      table.string('name');
+      table.string('name').notNullable;
       table.string('phone').nullable();
       table.string('email').nullable();
       table.string('address').nullable();
       table.enum('type', Object.values(CustomerType)).nullable();
-      table.timestamp('created_at').defaultTo(knex.fn.now());
-      table.timestamp('updated_at').defaultTo(knex.fn.now());
+      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('updatedAt').defaultTo(knex.fn.now());
     })
     .createTable('orders', function(table) {
       table.increments();
@@ -27,16 +27,16 @@ export async function up(knex: Knex): Promise<void> {
         .index()
         .references('id')
         .inTable('customers');
-      table.timestamp('created_at').defaultTo(knex.fn.now());
-      table.timestamp('updated_at').defaultTo(knex.fn.now());
+      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('updatedAt').defaultTo(knex.fn.now());
     })
     .createTable('dishes', function(table) {
       table.increments();
       table.string('name');
       table.enum('type', Object.values(DishType));
       table.integer('quantity');
-      table.timestamp('created_at').defaultTo(knex.fn.now());
-      table.timestamp('updated_at').defaultTo(knex.fn.now());
+      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('updatedAt').defaultTo(knex.fn.now());
 
       table
         .integer('orderId')
