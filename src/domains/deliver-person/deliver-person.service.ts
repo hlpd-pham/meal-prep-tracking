@@ -67,7 +67,10 @@ export class DeliverPersonService {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
 
-      // TODO: investigate many-many relation b/w order & deliver_person
+      await this.deliverPersonModel
+        .relatedQuery('orders')
+        .for(+deliverPersonId)
+        .relate(preloadedOrder.id);
     }
 
     return deliverPerson;
@@ -83,5 +86,22 @@ export class DeliverPersonService {
       );
     }
     return affectedRows;
+  }
+
+  async preloadDeliverPerson(
+    deliverPerson: DeliverPerson,
+  ): Promise<DeliverPerson> {
+    if (deliverPerson.id) {
+      const existingDeliverPerson = await this.deliverPersonModel
+        .query()
+        .findById(deliverPerson.id);
+      if (!existingDeliverPerson) {
+        throw new NotFoundException(
+          `Deliver Person #${deliverPerson.id} not found`,
+        );
+      }
+      return existingDeliverPerson;
+    }
+    return await this.deliverPersonModel.query().insert(deliverPerson);
   }
 }

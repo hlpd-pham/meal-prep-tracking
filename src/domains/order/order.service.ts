@@ -4,6 +4,8 @@ import { Customer } from '../customer/customer.model';
 import { CustomerService } from '../customer/customer.service';
 import { DishService } from '../dish/dish.service';
 import { OrderDto, UpdateOrderDto } from './order.dto';
+import { DeliverPerson } from '../deliver-person/deliver-person.model';
+import { DeliverPersonService } from '../deliver-person/deliver-person.service';
 
 @Injectable()
 export class OrderService {
@@ -12,6 +14,9 @@ export class OrderService {
     private readonly orderModel: typeof Order,
     @Inject(Customer)
     private readonly customerModel: typeof Customer,
+    @Inject(DeliverPerson)
+    private readonly deliverPersonModel: typeof DeliverPerson,
+    private readonly deliverPersonService: DeliverPersonService,
     private readonly customerService: CustomerService,
     private readonly dishService: DishService,
   ) {}
@@ -56,7 +61,7 @@ export class OrderService {
   }
 
   async update(orderId: string, updateOrderDto: UpdateOrderDto) {
-    const { customer, dishes, ...orderInfo } = updateOrderDto;
+    const { deliverPerson, customer, dishes, ...orderInfo } = updateOrderDto;
 
     const order = await this.orderModel
       .query()
@@ -86,6 +91,13 @@ export class OrderService {
         const preloadedDish = await this.dishService.preloadDish(dishes[i]);
         await order.$relatedQuery('dishes').relate(preloadedDish);
       }
+    }
+
+    // associate deliver person with order
+    if (deliverPerson) {
+      const preloadedDeliverPerson = this.deliverPersonService.preloadDeliverPerson(
+        deliverPerson,
+      );
     }
 
     return order;

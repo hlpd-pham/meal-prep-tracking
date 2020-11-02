@@ -7,7 +7,7 @@ import { DeliverPersonController } from './deliver-person.controller';
 
 @Module({
   imports: [ObjectionModule.forFeature([DeliverPerson, Order])],
-  exports: [],
+  exports: [DeliverPersonService],
   controllers: [DeliverPersonController],
   providers: [DeliverPersonService],
 })

@@ -27,8 +27,4 @@ export class DeliverPerson extends Model {
       },
     },
   };
-
-  async $beforeDelete() {
-    this.$relatedQuery('orders').unrelate();
-  }
 }

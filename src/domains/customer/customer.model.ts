@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsObject, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { Model } from 'objection';
 import { Order } from '../order/order.model';
 
