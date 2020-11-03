@@ -34,7 +34,7 @@ export class DishService {
       if (!orderModelItem) {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
-      orderModelItem.$relatedQuery('dishes').relate(dish);
+      orderModelItem.$relatedQuery('dishes').relate(dish.id);
     }
 
     return dish;
@@ -59,7 +59,7 @@ export class DishService {
       if (!orderModelItem) {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
-      orderModelItem.$relatedQuery('dishes').relate(updatedDish);
+      orderModelItem.$relatedQuery('dishes').relate(updatedDish.id);
     }
 
     return updatedDish;

@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import { Order } from '../order/order.model';
 
 export class DeliverPerson extends Model {
   static tableName = 'deliver_persons';
@@ -7,6 +8,7 @@ export class DeliverPerson extends Model {
   name: string;
   phone: string;
   email?: string;
+  orders: Order[];
 
   static get relationMappings() {
     const {

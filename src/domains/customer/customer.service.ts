@@ -10,14 +10,14 @@ export class CustomerService {
   ) {}
 
   findAll() {
-    return this.customerModel.query().withGraphFetched('orders');
+    return this.customerModel.query().withGraphFetched({ orders: true });
   }
 
   async findOne(id: string) {
     const customer = await this.customerModel
       .query()
       .findById(+id)
-      .withGraphFetched('orders');
+      .withGraphFetched({ orders: true });
     if (!customer) {
       throw new NotFoundException(`Customer #${id} not found`);
     }
@@ -34,7 +34,7 @@ export class CustomerService {
       .query()
       .patch(updateCustomerDto)
       .findById(+id)
-      .withGraphFetched('orders');
+      .withGraphFetched({ orders: true });
     if (!updatingResult) {
       throw new NotFoundException(`Customer #${id} not found`);
     }
@@ -54,7 +54,7 @@ export class CustomerService {
       const existingCustomer = await this.customerModel
         .query()
         .findById(+customer.id)
-        .withGraphFetched('orders');
+        .withGraphFetched({ orders: true });
       if (!existingCustomer) {
         throw new NotFoundException(`Customer #${customer.id} not found`);
       }

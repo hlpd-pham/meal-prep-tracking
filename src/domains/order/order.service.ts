@@ -32,7 +32,7 @@ export class OrderService {
     const order = await this.orderModel
       .query()
       .findById(+orderId)
-      .withGraphFetched('dishes');
+      .withGraphFetched({ dishes: true });
     return order;
   }
 
@@ -49,18 +49,18 @@ export class OrderService {
       const preloadedCustomer = await this.customerService.preloadCustomer(
         customer,
       );
-      await preloadedCustomer.$relatedQuery('orders').relate(order);
+      await preloadedCustomer.$relatedQuery('orders').relate(order.id);
     }
 
     // associate dishes with order
     if (dishes) {
       for (var i = 0; i < dishes.length; i++) {
         const preloadedDish = await this.dishService.preloadDish(dishes[i]);
-        await order.$relatedQuery('dishes').relate(preloadedDish);
+        await order.$relatedQuery('dishes').relate(preloadedDish.id);
       }
     }
 
-    return order;
+    return order.$fetchGraph({ dishes: true });
   }
 
   async update(orderId: string, updateOrderDto: UpdateOrderDto) {
@@ -85,22 +85,24 @@ export class OrderService {
         customer,
       );
 
-      await preloadedCustomer.$relatedQuery('orders').relate(order);
+      await preloadedCustomer.$relatedQuery('orders').relate(order.id);
     }
 
     // associate order with dishes
     if (dishes) {
       for (var i = 0; i < dishes.length; i++) {
         const preloadedDish = await this.dishService.preloadDish(dishes[i]);
-        await order.$relatedQuery('dishes').relate(preloadedDish);
+        await order.$relatedQuery('dishes').relate(preloadedDish.id);
       }
     }
 
     // associate deliver person with order
     if (deliverPerson) {
-      const preloadedDeliverPerson = this.deliverPersonService.preloadDeliverPerson(
+      const preloadedDeliverPerson = await this.deliverPersonService.preloadDeliverPerson(
         deliverPerson,
       );
+
+      await preloadedDeliverPerson.$relatedQuery('orders').relate(order.id);
     }
 
     return order;
@@ -112,6 +114,10 @@ export class OrderService {
       .for(+orderId)
       .delete();
     await this.customerModel
+      .relatedQuery('orders')
+      .unrelate()
+      .where('id', +orderId);
+    await this.deliverPersonModel
       .relatedQuery('orders')
       .unrelate()
       .where('id', +orderId);
