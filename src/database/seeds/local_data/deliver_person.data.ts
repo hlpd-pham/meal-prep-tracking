@@ -22,12 +22,5 @@ export async function seed(knex: Knex) {
     knex('deliver_persons')
       .insert(deliver_persons)
       .then(trx.commit);
-
-    knex('orders')
-      .where('id', '=', 1)
-      .update({
-        deliverPersonId: 1,
-      })
-      .then(trx.commit);
   });
 }

@@ -10,21 +10,21 @@ export async function up(knex: Knex): Promise<void> {
       table.timestamp('createdAt').defaultTo(knex.fn.now());
       table.timestamp('updatedAt').defaultTo(knex.fn.now());
     })
-    .table('orders', function(ordersTable) {
-      ordersTable
+    .createTable('deliver_person_order_assocs', function(table) {
+      table.increments().primary();
+      table
         .integer('deliverPersonId')
         .unsigned()
-        .index()
         .references('id')
         .inTable('deliver_persons');
+      table
+        .integer('orderId')
+        .unsigned()
+        .references('id')
+        .inTable('orders');
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema
-    .alterTable('orders', table => {
-      table.dropForeign(['deliverPersonId']);
-      table.dropColumn('deliverPersonId');
-    })
-    .dropTableIfExists('deliver_persons');
+  return knex.schema.dropTableIfExists('deliver_persons');
 }
