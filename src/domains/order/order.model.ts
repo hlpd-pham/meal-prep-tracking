@@ -1,7 +1,5 @@
-import { IsDate, IsEnum, IsNumber } from 'class-validator';
 import { Model } from 'objection';
 import { Customer } from '../customer/customer.model';
-import { DeliverPerson } from '../deliver-person/deliver-person.model';
 import { Dish } from '../dish/dish.model';
 
 export enum OrderStatus {
@@ -14,42 +12,49 @@ export enum OrderStatus {
 export class Order extends Model {
   static tableName = 'orders';
 
-  @IsNumber()
   id: number;
-
-  @IsDate()
   orderDate: Date;
-
-  @IsDate()
   deliveryDate: Date;
-
-  @IsEnum(OrderStatus)
   status: OrderStatus;
 
-  static relationMappings = {
-    dishes: {
-      relation: Model.HasManyRelation,
-      modelClass: Dish,
-      join: {
-        from: 'orders.id',
-        to: 'dishes.orderId',
+  static get relationMappings() {
+    const {
+      DeliverPersonOrderAssoc,
+    } = require('./../assocs/deliver-person-order-assoc.model');
+    const {
+      DeliverPerson,
+    } = require('./../deliver-person/deliver-person.model');
+
+    return {
+      dishes: {
+        relation: Model.HasManyRelation,
+        modelClass: Dish,
+        join: {
+          from: 'orders.id',
+          to: 'dishes.orderId',
+        },
       },
-    },
-    customer: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: Customer,
-      join: {
-        from: 'orders.customerId',
-        to: 'customers.id',
+      customer: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Customer,
+        join: {
+          from: 'orders.customerId',
+          to: 'customers.id',
+        },
       },
-    },
-    deliverPerson: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: DeliverPerson,
-      join: {
-        from: 'orders.deliverPersonId',
-        to: 'deliver_persons.id',
+      deliverPersons: {
+        relation: Model.ManyToManyRelation,
+        modelClass: DeliverPerson,
+        join: {
+          from: 'orders.id',
+          through: {
+            modelClass: DeliverPersonOrderAssoc,
+            from: 'deliver_person_order_assocs.orderId',
+            to: 'deliver_person_order_assocs.deliverPersonId',
+          },
+          to: 'deliver_persons.id',
+        },
       },
-    },
-  };
+    };
+  }
 }

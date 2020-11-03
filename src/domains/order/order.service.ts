@@ -22,7 +22,10 @@ export class OrderService {
   ) {}
 
   async findAll() {
-    return await this.orderModel.query().withGraphFetched('dishes');
+    return await this.orderModel.query().withGraphFetched({
+      dishes: true,
+      deliverPersons: true,
+    });
   }
 
   async findOne(orderId: string) {

@@ -13,7 +13,7 @@ export class DeliverPersonService {
   ) {}
 
   async findAll(): Promise<DeliverPerson[]> {
-    return await this.deliverPersonModel.query();
+    return await this.deliverPersonModel.query().withGraphFetched('orders');
   }
 
   async findOne(id: string) {
@@ -35,7 +35,7 @@ export class DeliverPersonService {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
 
-      // deliverPerson.$relatedQuery('orders').relate(existingOrder);
+      deliverPerson.$relatedQuery('orders').relate(existingOrder.id);
     }
     return deliverPerson;
   }
@@ -67,10 +67,7 @@ export class DeliverPersonService {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
 
-      await this.deliverPersonModel
-        .relatedQuery('orders')
-        .for(+deliverPersonId)
-        .relate(preloadedOrder.id);
+      await deliverPerson.$relatedQuery('orders').relate(preloadedOrder.id);
     }
 
     return deliverPerson;
