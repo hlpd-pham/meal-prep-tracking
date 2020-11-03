@@ -1,4 +1,3 @@
-import { IsEnum, IsNumber } from 'class-validator';
 import { Model } from 'objection';
 import { Order } from '../order/order.model';
 
@@ -11,16 +10,9 @@ export enum DishType {
 export class Dish extends Model {
   static tableName = 'dishes';
 
-  @IsNumber()
   id: number;
-
-  @IsNumber()
   name: string;
-
-  @IsEnum(DishType)
   type: DishType;
-
-  @IsNumber()
   quantity: number = 1;
 
   static relationMappings = {

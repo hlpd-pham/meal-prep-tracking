@@ -1,4 +1,3 @@
-import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { Model } from 'objection';
 import { Order } from '../order/order.model';
 
@@ -10,22 +9,11 @@ export enum CustomerType {
 export class Customer extends Model {
   static tableName = 'customers';
 
-  @IsNumber()
   id: number;
-
-  @IsString()
   name: string;
-
-  @IsString()
   phone?: string;
-
-  @IsString()
   email?: string;
-
-  @IsString()
   address?: string;
-
-  @IsEnum(CustomerType)
   type?: CustomerType = CustomerType.OneTime;
 
   static relationMappings = {
