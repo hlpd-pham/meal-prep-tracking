@@ -20,6 +20,19 @@ module.exports = {
       tableName: 'knex_migrations',
     },
   },
+  test: {
+    client: 'sqlite3',
+    connection: ':memory:',
+    useNullAsDefault: true,
+    migration: {
+      directory: 'migrations',
+      extenstion: 'ts',
+      tableName: 'knex_migrations',
+    },
+    seeds: {
+      directory: './seeds/test_data',
+    },
+  },
   timezone: 'UTC',
   ...knexSnakeCaseMappers(),
 } as Config;
