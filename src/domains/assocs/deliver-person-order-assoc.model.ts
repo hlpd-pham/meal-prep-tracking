@@ -1,6 +1,6 @@
-import { Model } from 'objection';
+import { BaseModel } from 'src/database/base.model';
 
-export class DeliverPersonOrderAssoc extends Model {
+export class DeliverPersonOrderAssoc extends BaseModel {
   static tableName = 'deliver_person_order_assocs';
 
   static get idColumn() {

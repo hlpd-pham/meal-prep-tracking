@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import { BaseModel } from 'src/database/base.model';
 import { Customer } from '../customer/customer.model';
 import { Dish } from '../dish/dish.model';
 
@@ -9,7 +10,7 @@ export enum OrderStatus {
   Deliverd = 'DELIVERED',
 }
 
-export class Order extends Model {
+export class Order extends BaseModel {
   static tableName = 'orders';
 
   id: number;

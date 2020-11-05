@@ -12,8 +12,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').nullable();
       table.string('address').nullable();
       table.enum('type', Object.values(CustomerType)).nullable();
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.timestamp('updatedAt').defaultTo(knex.fn.now());
+      table.timestamps(true, true);
     })
     .createTable('orders', function(table) {
       table.increments();
@@ -27,16 +26,14 @@ export async function up(knex: Knex): Promise<void> {
         .index()
         .references('id')
         .inTable('customers');
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.timestamp('updatedAt').defaultTo(knex.fn.now());
+      table.timestamps(true, true);
     })
     .createTable('dishes', function(table) {
       table.increments();
       table.string('name');
       table.enum('type', Object.values(DishType));
       table.integer('quantity');
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.timestamp('updatedAt').defaultTo(knex.fn.now());
+      table.timestamps(true, true);
 
       table
         .integer('orderId')

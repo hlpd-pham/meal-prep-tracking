@@ -7,8 +7,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('name').notNullable();
       table.string('phone').notNullable();
       table.string('email').nullable();
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.timestamp('updatedAt').defaultTo(knex.fn.now());
+      table.timestamps(true, true);
     })
     .createTable('deliver_person_order_assocs', function(table) {
       table.increments().primary();
@@ -26,5 +25,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists('deliver_persons');
+  return knex.schema
+    .dropTableIfExists('deliver_persons')
+    .dropTableIfExists('deliver_person_order_assocs');
 }

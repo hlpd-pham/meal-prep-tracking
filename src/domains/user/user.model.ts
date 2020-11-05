@@ -1,7 +1,8 @@
 import { Model } from 'objection';
 import * as bcrypt from 'bcrypt';
+import { BaseModel } from 'src/database/base.model';
 
-export class User extends Model {
+export class User extends BaseModel {
   static tableName = 'users';
 
   id!: number;

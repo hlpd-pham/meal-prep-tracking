@@ -1,7 +1,8 @@
 import { Model } from 'objection';
+import { BaseModel } from 'src/database/base.model';
 import { Order } from '../order/order.model';
 
-export class DeliverPerson extends Model {
+export class DeliverPerson extends BaseModel {
   static tableName = 'deliver_persons';
 
   id: number;

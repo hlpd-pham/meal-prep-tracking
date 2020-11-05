@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import { BaseModel } from 'src/database/base.model';
 import { Order } from '../order/order.model';
 
 export enum CustomerType {
@@ -6,7 +7,7 @@ export enum CustomerType {
   Recurring = 'RECURRING',
 }
 
-export class Customer extends Model {
+export class Customer extends BaseModel {
   static tableName = 'customers';
 
   id: number;
