@@ -7,6 +7,8 @@ import { DishModule } from './domains/dish/dish.module';
 import { OrderModule } from './domains/order/order.module';
 import { CoreModule } from './core/core.module';
 import { DeliverPersonModule } from './domains/deliver-person/deliver-person.module';
+import { UserModule } from './domains/user/user.module';
+import { AuthModule } from './core/auth/auth.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -15,6 +17,7 @@ import { DeliverPersonModule } from './domains/deliver-person/deliver-person.mod
     OrderModule,
     CoreModule,
     DeliverPersonModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
