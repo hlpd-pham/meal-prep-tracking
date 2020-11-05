@@ -9,7 +9,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from 'src/domains/user/user.dto';
 import { User } from 'src/domains/user/user.model';
-import { AuthResponse } from './auth.response';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +40,8 @@ export class AuthService {
     try {
       const user = await this.userModel
         .query()
-        .findOne({ email: userDto.email, username: userDto.username });
+        .findOne({ username: userDto.username })
+        .orWhere({ email: userDto.email });
 
       if (!user) {
         throw new NotFoundException(`User information is invalid`);
