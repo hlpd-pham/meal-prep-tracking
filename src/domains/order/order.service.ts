@@ -33,7 +33,6 @@ export class OrderService {
       .query()
       .findById(+orderId)
       .withGraphFetched({ dishes: true });
-    console.log(order.toJSON());
     return order;
   }
 

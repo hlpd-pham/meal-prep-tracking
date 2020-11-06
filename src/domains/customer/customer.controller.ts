@@ -7,9 +7,11 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CustomerDto, UpdateCustomerDto } from './../customer/customer.dto';
 import { CustomerService } from './../customer/customer.service';
 
+@ApiTags('customers')
 @Controller('customers')
 export class CustomerController {
   constructor(private customerService: CustomerService) {}

@@ -7,9 +7,11 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { DeliverPersonDto, UpdateDeliverPersonDto } from './deliver-person.dto';
 import { DeliverPersonService } from './deliver-person.service';
 
+@ApiTags('deliver-persons')
 @Controller('deliver-persons')
 export class DeliverPersonController {
   constructor(private deliverPersonService: DeliverPersonService) {}
