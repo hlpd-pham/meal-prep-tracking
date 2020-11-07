@@ -1,15 +1,14 @@
 import { Config } from 'knex';
 import { knexSnakeCaseMappers } from 'objection';
+import { ApiConfig } from 'src/app.config';
 
 module.exports = {
   development: {
     client: 'postgresql',
-    connection: {
-      database: 'mealprep_db',
-      user: 'mealprepuser',
-      password: 'pass123',
-      port: 5432,
-      host: 'localhost',
+    connection: ApiConfig.DB_URL,
+    pool: {
+      min: 2,
+      max: 10,
     },
     seeds: {
       directory: './seeds/local_data',
