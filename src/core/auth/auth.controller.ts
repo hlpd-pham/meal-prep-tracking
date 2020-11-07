@@ -15,7 +15,6 @@ export class AuthController {
 
   @Post('/login')
   login(@Body() credentials: UserDto) {
-    // TODO: get this endpoint to work
     return this.authService.login(credentials);
   }
 }

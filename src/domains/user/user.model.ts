@@ -1,4 +1,3 @@
-import { Model } from 'objection';
 import * as bcrypt from 'bcrypt';
 import { BaseModel } from 'src/database/base.model';
 
