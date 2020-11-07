@@ -30,12 +30,15 @@
     "@nestjs/typeorm": "^7.1.4",
     "@types/dotenv": "^8.2.0",
     "@willsoto/nestjs-objection": "^4.0.2",
+    "chalk": "^4.1.0",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "faker": "^5.1.0",
     "glob": "^7.1.6",
     "knex": "^0.21.6",
+    "nest-winston": "^1.4.0",
     "objection": "^2.2.3",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
@@ -78,7 +81,8 @@
     "ts-loader": "^6.2.1",
     "ts-node": "9.0.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "winston": "^3.3.3"
   },
   "jest": {
     "moduleFileExtensions": [
