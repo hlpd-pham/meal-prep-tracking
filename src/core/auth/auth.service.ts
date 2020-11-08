@@ -17,7 +17,7 @@ export class AuthService {
       { username: user.username },
       { expiresIn: '10h' },
     );
-    return { user: user.toJSON(), token };
+    return { user: user.username, token };
   }
 
   async login(userDto: UserDto) {

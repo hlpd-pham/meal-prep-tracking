@@ -14,10 +14,14 @@ import { User } from 'src/domains/user/user.model';
     JwtModule.register({
       secret: 'secret',
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      property: 'user',
+      session: false,
+    }),
   ],
   providers: [AuthService, JwtStrategy, UserService],
-  exports: [PassportModule, JwtStrategy],
+  exports: [PassportModule, JwtStrategy, AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}

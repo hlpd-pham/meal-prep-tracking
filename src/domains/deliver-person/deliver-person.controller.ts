@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { DeliverPersonDto, UpdateDeliverPersonDto } from './deliver-person.dto';
 import { DeliverPersonService } from './deliver-person.service';
 
 @ApiTags('deliver-persons')
+@UseGuards(AuthGuard())
 @Controller('deliver-persons')
 export class DeliverPersonController {
   constructor(private deliverPersonService: DeliverPersonService) {}

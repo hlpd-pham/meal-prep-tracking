@@ -16,10 +16,19 @@ export class UserService {
   ) {}
 
   async findOne(userDto: UserDto): Promise<User> {
-    const existingUser = await this.userModel
-      .query()
-      .findOne({ username: userDto.username })
-      .orWhere({ email: userDto.email });
+    let existingUser: User;
+
+    if (userDto.email) {
+      existingUser = await this.userModel
+        .query()
+        .findOne({ email: userDto.email });
+    }
+
+    if (userDto.username) {
+      existingUser = await this.userModel
+        .query()
+        .findOne({ username: userDto.username });
+    }
 
     if (!existingUser) {
       throw new NotFoundException('User information is invalid');

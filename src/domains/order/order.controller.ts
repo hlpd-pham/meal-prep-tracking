@@ -6,18 +6,23 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { OrderDto, UpdateOrderDto } from './../order/order.dto';
 import { OrderService } from './../order/order.service';
 
 @ApiTags('orders')
+@UseGuards(AuthGuard())
 @Controller('orders')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Get()
-  findAll() {
+  findAll(@Req() req: any) {
+    console.log(req.user);
     return this.orderService.findAll();
   }
 

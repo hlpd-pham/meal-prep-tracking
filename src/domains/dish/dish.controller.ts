@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { DishDto, UpdateDishDto } from './../dish/dish.dto';
 import { DishService } from './../dish/dish.service';
 
 @ApiTags('dishes')
+@UseGuards(AuthGuard())
 @Controller('dishes')
 export class DishController {
   constructor(private dishService: DishService) {}
