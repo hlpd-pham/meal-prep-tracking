@@ -6,6 +6,14 @@
 
 NestJS API for tracking meal prep orders using [`NestJS`](https://docs.nestjs.com/), [`Objection.js`](https://vincit.github.io/objection.js/), and [`Knex.js`](https://knexjs.org/)
 
+</br>
+
+## Support
+
+I'm building this app live on [`Twitch`](https://twitch.tv/thehsian)
+
+</br>
+
 ## Installing dependencies
 
 ```bash
@@ -37,7 +45,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-I'm building this app live on [`Twitch`](https://twitch.tv/thehsian)
