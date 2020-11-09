@@ -10,8 +10,10 @@ import { DeliverPersonModule } from './domains/deliver-person/deliver-person.mod
 import { UserModule } from './domains/user/user.module';
 import { AuthModule } from './core/auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     DatabaseModule,
     DishModule,
     CustomerModule,

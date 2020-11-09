@@ -1,10 +1,4 @@
-import {
-  ConflictException,
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UserDto } from './user.dto';
 import { User } from './user.model';
 
@@ -37,14 +31,6 @@ export class UserService {
   }
 
   async create(userDto: UserDto): Promise<User> {
-    try {
-      return await this.userModel.query().insert(userDto);
-    } catch (e) {
-      // postgres error code for duplicate unique entry
-      if (e.code === '23505') {
-        throw new ConflictException('Username already exists');
-      }
-      throw new InternalServerErrorException();
-    }
+    return await this.userModel.query().insert(userDto);
   }
 }
