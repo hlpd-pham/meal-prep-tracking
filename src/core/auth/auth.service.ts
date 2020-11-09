@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -25,7 +26,7 @@ export class AuthService {
       if (e instanceof UniqueViolationError) {
         throw new HttpException('Username already exists', HttpStatus.CONFLICT);
       } else {
-        throw e;
+        throw new InternalServerErrorException();
       }
     }
   }

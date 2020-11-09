@@ -36,6 +36,9 @@ export class OrderService {
     return order;
   }
 
+  /** Create an order record. Create relations with a customer
+   * or dishes if applies.
+   */
   async create(orderDto: OrderDto) {
     const { customer, dishes, ...orderInfo } = orderDto;
 
@@ -63,6 +66,9 @@ export class OrderService {
     return order.$fetchGraph({ dishes: true });
   }
 
+  /** Update an order, create relations with a customer, a deliver person,
+   * and dishes if applies.
+   */
   async update(orderId: string, updateOrderDto: UpdateOrderDto) {
     const { deliverPerson, customer, dishes, ...orderInfo } = updateOrderDto;
 
@@ -109,6 +115,7 @@ export class OrderService {
   }
 
   async remove(orderId: string) {
+    // Remove relations
     await this.orderModel
       .relatedQuery('dishes')
       .for(+orderId)
@@ -124,6 +131,7 @@ export class OrderService {
     return await this.orderModel.query().deleteById(+orderId);
   }
 
+  /** Load an order. If there isn't one, create & return */
   async preloadOrder(order: Order): Promise<Order> {
     if (order.id) {
       const existingOrder = await this.orderModel.query().findById(order.id);

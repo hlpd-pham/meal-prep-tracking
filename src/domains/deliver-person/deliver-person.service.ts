@@ -29,6 +29,7 @@ export class DeliverPersonService {
     return deliverPerson;
   }
 
+  /** Create a deliver person record and attach it to an order */
   async create(deliverPersonDto: DeliverPersonDto) {
     const { orderId, ...deliverPersonInfo } = deliverPersonDto;
     const deliverPerson = await this.deliverPersonModel
@@ -45,6 +46,10 @@ export class DeliverPersonService {
     return deliverPerson.$fetchGraph({ orders: true });
   }
 
+  /**
+   * Update a deliver person record, create an order relation
+   * if necessary
+   */
   async update(
     deliverPersonId: string,
     updateDeliverPersonDto: UpdateDeliverPersonDto,
@@ -67,12 +72,12 @@ export class DeliverPersonService {
       .patch(deliverPersonInfo);
 
     if (orderId) {
-      const preloadedOrder = await this.orderModel.query().findById(+orderId);
-      if (!preloadedOrder) {
+      const existingOrder = await this.orderModel.query().findById(+orderId);
+      if (!existingOrder) {
         throw new NotFoundException(`Order #${orderId} not found`);
       }
 
-      await deliverPerson.$relatedQuery('orders').relate(preloadedOrder.id);
+      await deliverPerson.$relatedQuery('orders').relate(existingOrder.id);
     }
 
     return deliverPerson.$fetchGraph({ orders: true });
@@ -90,6 +95,7 @@ export class DeliverPersonService {
     return affectedRows;
   }
 
+  /** Load a deliver person record. If there isn't one, create & return */
   async preloadDeliverPerson(
     deliverPerson: DeliverPerson,
   ): Promise<DeliverPerson> {

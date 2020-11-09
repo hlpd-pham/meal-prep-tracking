@@ -15,6 +15,7 @@ import authConfig from './auth.config';
     ObjectionModule.forFeature([User]),
     ConfigModule.forFeature(authConfig),
     JwtModule.registerAsync({
+      // register configs for token signing, see https://github.com/nestjs/jwt#async-options
       imports: [ConfigModule.forFeature(authConfig)],
       inject: [authConfig.KEY],
       useFactory: async (authConfiguration: ConfigType<typeof authConfig>) => ({
@@ -26,7 +27,7 @@ import authConfig from './auth.config';
     }),
     PassportModule.register({
       defaultStrategy: 'jwt',
-      property: 'user',
+      property: 'user', // all signed token must be an object with a user attribute
       session: false,
     }),
   ],
@@ -34,6 +35,4 @@ import authConfig from './auth.config';
   exports: [PassportModule, JwtStrategy, AuthService],
   controllers: [AuthController],
 })
-export class AuthModule {
-  constructor() {}
-}
+export class AuthModule {}
