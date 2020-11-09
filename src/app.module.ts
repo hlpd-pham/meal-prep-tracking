@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { DeliverPersonModule } from './domains/deliver-person/deliver-person.module';
 import { UserModule } from './domains/user/user.module';
 import { AuthModule } from './core/auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     DatabaseModule,
@@ -18,8 +19,11 @@ import { AuthModule } from './core/auth/auth.module';
     CoreModule,
     DeliverPersonModule,
     UserModule,
+    AuthModule,
+    PassportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
+  exports: [PassportModule],
 })
 export class AppModule {}
