@@ -9,6 +9,7 @@ export class CustomerService {
     private readonly customerModel: typeof Customer,
   ) {}
 
+  /** get all customers with orders */
   findAll() {
     return this.customerModel.query().withGraphFetched({ orders: true });
   }
@@ -29,6 +30,7 @@ export class CustomerService {
     return customer;
   }
 
+  /** Update a customer and return updated result */
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
     const updatingResult = await this.customerModel
       .query()
@@ -41,6 +43,7 @@ export class CustomerService {
     return updatingResult;
   }
 
+  /** Delete a customer record and return number of deleted rows (should be 1) */
   async remove(id: string) {
     const deletingResult = await this.customerModel.query().deleteById(+id);
     if (deletingResult === 0) {
@@ -49,6 +52,7 @@ export class CustomerService {
     return deletingResult;
   }
 
+  /** Load an existing customer, if there isn't one, create and return */
   async preloadCustomer(customer: Customer): Promise<Customer> {
     if (customer.id) {
       const existingCustomer = await this.customerModel

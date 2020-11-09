@@ -24,6 +24,7 @@ export class DishService {
     return dish;
   }
 
+  /** Create a dish record and makes it belong to an order */
   async create(dishDto: DishDto) {
     // An order in dishDto has to be an existing order
     const { orderId, ...dishInfo } = dishDto;
@@ -40,6 +41,9 @@ export class DishService {
     return dish;
   }
 
+  /** Update a dish record and return the updated result
+   * Update order relation if necessary
+   */
   async update(id: string, updateDishDto: UpdateDishDto) {
     // An order in dishDto has to be an existing order
     const { orderId, ...dishInfo } = updateDishDto;
@@ -73,6 +77,7 @@ export class DishService {
     return numberOfAffectedRows;
   }
 
+  /** Load a dish record. If there isn't one, create & return */
   async preloadDish(dish: Dish): Promise<Dish> {
     if (dish.id) {
       const existingDish = await this.dishModel.query().findById(dish.id);
