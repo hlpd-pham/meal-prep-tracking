@@ -1,5 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UniqueViolationError } from 'objection';
 import { UserDto } from 'src/domains/user/user.dto';
 import { UserService } from 'src/domains/user/user.service';
 
@@ -11,13 +17,17 @@ export class AuthService {
   ) {}
 
   async register(userDto: UserDto) {
-    const user = await this.userService.create(userDto);
-
-    const token = this.jwtService.sign(
-      { username: user.username },
-      { expiresIn: '10h' },
-    );
-    return { user: user.username, token };
+    try {
+      const user = await this.userService.create(userDto);
+      const token = this.jwtService.sign({ user: user.username });
+      return { user: user.username, token };
+    } catch (e) {
+      if (e instanceof UniqueViolationError) {
+        throw new HttpException('Username already exists', HttpStatus.CONFLICT);
+      } else {
+        throw e;
+      }
+    }
   }
 
   async login(userDto: UserDto) {
@@ -28,8 +38,8 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
       }
 
-      const token = this.jwtService.sign(user.username);
-      return { user: user.toJSON(), token };
+      const token = this.jwtService.sign({ user: user.username });
+      return { user: user.username, token };
     } catch (e) {
       throw new UnauthorizedException('Invalid credentials');
     }
