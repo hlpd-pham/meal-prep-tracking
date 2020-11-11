@@ -1,6 +1,6 @@
 import { Config } from 'knex';
 import { knexSnakeCaseMappers } from 'objection';
-import { ApiConfig } from 'src/app.config';
+import { ApiConfig } from './../app.config';
 
 module.exports = {
   development: {

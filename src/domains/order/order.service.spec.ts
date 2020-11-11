@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { QueryBuilder } from 'objection';
-import { orderFactory, mockModel } from './../../test/factories';
 import { Customer } from '../customer/customer.model';
 import { CustomerService } from '../customer/customer.service';
 import { Dish } from '../dish/dish.model';
