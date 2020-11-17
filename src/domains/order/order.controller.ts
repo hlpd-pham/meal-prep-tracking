@@ -6,23 +6,22 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UseGuards,
+  Request,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt.guard';
 import { OrderDto, UpdateOrderDto } from './../order/order.dto';
 import { OrderService } from './../order/order.service';
 
 @ApiTags('orders')
-@UseGuards(AuthGuard())
+@UseGuards(JwtAuthGuard)
 @Controller('orders')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Get()
-  findAll(@Req() req: any) {
-    console.log(req.user);
+  findAll() {
     return this.orderService.findAll();
   }
 
