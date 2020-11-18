@@ -5,7 +5,6 @@ import {
   UseGuards,
   Request,
   Get,
-  Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserDto } from './../../domains/user/user.dto';

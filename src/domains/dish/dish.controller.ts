@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/core/auth/guards/jwt.guard';
+import { JwtAuthGuard } from './../../core/auth/guards/jwt.guard';
 import { DishDto, UpdateDishDto } from './../dish/dish.dto';
 import { DishService } from './../dish/dish.service';
 

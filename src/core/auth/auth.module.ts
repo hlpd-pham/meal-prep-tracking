@@ -31,7 +31,6 @@ import { SessionSerializer } from './session.serializer';
     }),
     PassportModule.register({
       defaultStrategy: 'local',
-      // property: 'user', // all signed token must be an object with a user attribute
       session: true,
     }),
   ],
