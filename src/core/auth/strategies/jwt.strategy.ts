@@ -1,16 +1,15 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { UserDto } from './../../domains/user/user.dto';
 
-import { UserService } from './../../domains/user/user.service';
-import authConfig from './auth.config';
+import authConfig from '../auth.config';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly userService: UserService,
+    private readonly authService: AuthService,
     @Inject(authConfig.KEY)
     private authConfiguration: ConfigType<typeof authConfig>,
   ) {
@@ -21,12 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: UserDto) {
-    try {
-      const user = await this.userService.findOne(payload);
-      return user;
-    } catch (e) {
-      throw new UnauthorizedException('Unauthorized credentials');
-    }
+  async validate(payload: any) {
+    return { userId: payload.sub, username: payload.username };
   }
 }

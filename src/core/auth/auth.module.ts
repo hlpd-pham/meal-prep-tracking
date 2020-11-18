@@ -2,16 +2,20 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { UserService } from './../../domains/user/user.service';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { User } from './../../domains/user/user.model';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import authConfig from './auth.config';
+import { UserModule } from 'src/domains/user/user.module';
+import { LocalStrategy } from './strategies/local.strategy';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
   imports: [
+    UserModule,
     ObjectionModule.forFeature([User]),
     ConfigModule.forFeature(authConfig),
     JwtModule.registerAsync({
@@ -26,12 +30,17 @@ import authConfig from './auth.config';
       }),
     }),
     PassportModule.register({
-      defaultStrategy: 'jwt',
-      property: 'user', // all signed token must be an object with a user attribute
-      session: false,
+      defaultStrategy: 'local',
+      session: true,
     }),
   ],
-  providers: [AuthService, JwtStrategy, UserService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    UserService,
+    LocalStrategy,
+    SessionSerializer,
+  ],
   exports: [PassportModule, JwtStrategy, AuthService],
   controllers: [AuthController],
 })

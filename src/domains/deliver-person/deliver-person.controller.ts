@@ -8,13 +8,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from './../../core/auth/guards/jwt.guard';
 import { DeliverPersonDto, UpdateDeliverPersonDto } from './deliver-person.dto';
 import { DeliverPersonService } from './deliver-person.service';
 
 @ApiTags('deliver-persons')
-@UseGuards(AuthGuard())
+@UseGuards(JwtAuthGuard)
 @Controller('deliver-persons')
 export class DeliverPersonController {
   constructor(private deliverPersonService: DeliverPersonService) {}
