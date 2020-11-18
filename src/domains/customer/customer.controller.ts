@@ -8,13 +8,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt.guard';
 import { CustomerDto, UpdateCustomerDto } from './../customer/customer.dto';
 import { CustomerService } from './../customer/customer.service';
 
 @ApiTags('customers')
-@UseGuards(AuthGuard())
+@UseGuards(JwtAuthGuard)
 @Controller('customers')
 export class CustomerController {
   constructor(private customerService: CustomerService) {}

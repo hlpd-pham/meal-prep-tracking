@@ -11,6 +11,7 @@ import { ConfigModule, ConfigType } from '@nestjs/config';
 import authConfig from './auth.config';
 import { UserModule } from 'src/domains/user/user.module';
 import { LocalStrategy } from './strategies/local.strategy';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
   imports: [
@@ -29,11 +30,18 @@ import { LocalStrategy } from './strategies/local.strategy';
       }),
     }),
     PassportModule.register({
+      defaultStrategy: 'local',
       // property: 'user', // all signed token must be an object with a user attribute
       session: true,
     }),
   ],
-  providers: [AuthService, JwtStrategy, UserService, LocalStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    UserService,
+    LocalStrategy,
+    SessionSerializer,
+  ],
   exports: [PassportModule, JwtStrategy, AuthService],
   controllers: [AuthController],
 })

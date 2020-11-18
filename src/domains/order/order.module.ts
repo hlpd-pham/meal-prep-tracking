@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { AuthModule } from 'src/core/auth/auth.module';
 import { Customer } from '../customer/customer.model';
@@ -18,6 +19,7 @@ import { OrderService } from './order.service';
     DeliverPersonModule,
     ObjectionModule.forFeature([Order, Customer, Dish, DeliverPerson]),
     AuthModule,
+    PassportModule,
   ],
   exports: [OrderService],
   controllers: [OrderController],

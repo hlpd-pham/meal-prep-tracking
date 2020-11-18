@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ApiConfig } from './app.config';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +26,17 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/v1', app, document);
+
+  const appConfig = app.get<ConfigService>(ConfigService);
+  app.use(
+    session({
+      secret: appConfig.get<string>('JWT_SECRETKEY'),
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   await app.listen(ApiConfig.API_PORT);
 }

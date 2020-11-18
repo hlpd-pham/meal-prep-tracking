@@ -5,6 +5,7 @@ import {
   UseGuards,
   Request,
   Get,
+  Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserDto } from './../../domains/user/user.dto';
@@ -32,5 +33,10 @@ export class AuthController {
   @Get('/user')
   getUser(@Request() req) {
     return req.user;
+  }
+
+  @Get('/logout')
+  logout(@Request() req) {
+    req.logout();
   }
 }

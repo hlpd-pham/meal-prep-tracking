@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/core/auth/guards/jwt.guard';

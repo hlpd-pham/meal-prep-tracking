@@ -8,13 +8,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt.guard';
 import { DishDto, UpdateDishDto } from './../dish/dish.dto';
 import { DishService } from './../dish/dish.service';
 
 @ApiTags('dishes')
-@UseGuards(AuthGuard())
+@UseGuards(JwtAuthGuard)
 @Controller('dishes')
 export class DishController {
   constructor(private dishService: DishService) {}
