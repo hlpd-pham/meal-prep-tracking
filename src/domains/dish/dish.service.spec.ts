@@ -9,7 +9,7 @@ import { DishDto, UpdateDishDto } from './dish.dto';
 import { dishFactory, orderFactory } from './../../test/factories';
 import * as faker from 'faker';
 
-describe('CustomerService', () => {
+describe('DishService', () => {
   let dishService: DishService;
   let mockDishType: typeof Dish;
   let mockOrderType: typeof Order;

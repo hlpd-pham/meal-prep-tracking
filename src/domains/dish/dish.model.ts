@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import { BaseModel } from 'src/database/base.model';
+import { BaseModel } from './../../database/base.model';
 import { Order } from '../order/order.model';
 
 export enum DishType {
