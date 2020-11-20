@@ -37,6 +37,7 @@ export function orderFactory({
     QueryBuilder.forClass(Order).resolve('mockRelatedQuery');
   return order;
 }
+
 export function mockModel(Model) {
   const query = QueryBuilder.forClass(Model);
   jest.spyOn(Model, 'query').mockReturnValue(query);

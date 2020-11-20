@@ -1,4 +1,4 @@
-import { BaseModel } from 'src/database/base.model';
+import { BaseModel } from './../../database/base.model';
 
 export class DeliverPersonOrderAssoc extends BaseModel {
   static tableName = 'deliver_person_order_assocs';
