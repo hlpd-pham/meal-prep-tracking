@@ -21,8 +21,7 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Get()
-  findAll(@Req() req) {
-    console.log(req.signedCookies[0]);
+  findAll() {
     return this.orderService.findAll();
   }
 
