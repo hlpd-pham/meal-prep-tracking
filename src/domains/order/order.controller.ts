@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,7 +21,8 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @Get()
-  findAll() {
+  findAll(@Req() req) {
+    console.log(req.signedCookies[0]);
     return this.orderService.findAll();
   }
 

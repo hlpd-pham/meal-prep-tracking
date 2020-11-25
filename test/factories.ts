@@ -1,7 +1,7 @@
 import * as faker from 'faker';
 import { QueryBuilder } from 'objection';
-import { Dish, DishType } from './../domains/dish/dish.model';
-import { Order, OrderStatus } from './../domains/order/order.model';
+import { Dish, DishType } from '../src/domains/dish/dish.model';
+import { Order, OrderStatus } from '../src/domains/order/order.model';
 
 export function dishFactory({
   id,

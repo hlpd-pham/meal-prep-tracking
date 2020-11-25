@@ -6,7 +6,7 @@ import { Order } from '../order/order.model';
 import { QueryBuilder } from 'objection';
 import { NotFoundException } from '@nestjs/common';
 import { DishDto, UpdateDishDto } from './dish.dto';
-import { dishFactory, orderFactory } from './../../test/factories';
+import { dishFactory, orderFactory } from '../../../test/factories';
 import * as faker from 'faker';
 
 describe('DishService', () => {
