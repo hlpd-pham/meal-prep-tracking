@@ -6,4 +6,5 @@ export const ApiConfig = {
     process.env.DB_URL ??
     'postgresql://mealprepuser:pass123@localhost:5432/mealprep_db',
   JWT_SECRET: process.env.JWT_SECRETKEY ?? process.env.JWT_SECRETKEY,
+  JWT_EXPIRATION_TIME: process.env.JWT_EXPIRESIN ?? process.env.JWT_EXPIRESIN,
 };

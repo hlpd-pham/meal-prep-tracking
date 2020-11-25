@@ -5,17 +5,20 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UniqueViolationError } from 'objection';
-import { UserDto } from 'src/domains/user/user.dto';
-import { User } from 'src/domains/user/user.model';
-import { UserService } from 'src/domains/user/user.service';
+import { UserDto } from '../../domains/user/user.dto';
+import { User } from '../../domains/user/user.model';
+import { UserService } from '../../domains/user/user.service';
+import { TokenPayload } from './interfaces/token-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async register(userDto: UserDto) {
@@ -54,5 +57,17 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException('Invalid credentials');
     }
+  }
+
+  public getCookieWithJwtToken(userId: number) {
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_EXPIRESIN',
+    )}`;
+  }
+
+  public getLogOutCookie() {
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
   }
 }

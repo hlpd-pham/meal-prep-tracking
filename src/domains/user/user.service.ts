@@ -33,4 +33,14 @@ export class UserService {
   async create(userDto: UserDto): Promise<User> {
     return await this.userModel.query().insert(userDto);
   }
+
+  async findById(id: number | string): Promise<User> {
+    const user = await this.userModel.query().findById(+id);
+
+    if (!user) {
+      throw new NotFoundException(`Could not find user with id ${id}`);
+    }
+
+    return user;
+  }
 }

@@ -7,7 +7,7 @@ import { AuthController } from './auth.controller';
 import { UserService } from './../../domains/user/user.service';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { User } from './../../domains/user/user.model';
-import { ConfigModule, ConfigType } from '@nestjs/config';
+import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
 import authConfig from './auth.config';
 import { UserModule } from 'src/domains/user/user.module';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -40,6 +40,7 @@ import { SessionSerializer } from './session.serializer';
     UserService,
     LocalStrategy,
     SessionSerializer,
+    ConfigService,
   ],
   exports: [PassportModule, JwtStrategy, AuthService],
   controllers: [AuthController],
