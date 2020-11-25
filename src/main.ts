@@ -3,6 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ApiConfig } from './app.config';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
 
@@ -27,6 +28,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/v1', app, document);
 
+  // Setup session
   const appConfig = app.get<ConfigService>(ConfigService);
   app.use(
     session({
@@ -37,6 +39,9 @@ async function bootstrap() {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // Setup cookie
+  app.use(cookieParser());
 
   await app.listen(ApiConfig.API_PORT);
 }

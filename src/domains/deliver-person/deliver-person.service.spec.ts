@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 
 import { seedDeliverPersons } from './../../database/seeds/test_data/deliver_person.seed';
-import { mockModel } from './../../test/factories';
+import { mockModel } from '../../../test/factories';
 import { Order } from '../order/order.model';
 import { DeliverPerson } from './deliver-person.model';
 import { DeliverPersonService } from './deliver-person.service';
